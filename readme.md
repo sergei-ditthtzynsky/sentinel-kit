@@ -1,29 +1,48 @@
-Sentinel-Kit
+# 🛡️ Sentinel-Kit
 
-Simple Node.js Integrity Protection Library.
+Library proteksi integritas untuk project Node.js.
 
 Sentinel-Kit digunakan untuk mendeteksi perubahan file pada project Node.js menggunakan sistem hash integrity. Cocok digunakan untuk melindungi source code dari modifikasi tanpa izin.
 
-Instalasi
+---
 
-Tambahkan package berikut ke "package.json":
+## ✨ Fitur
 
+- Melindungi file dari modifikasi tanpa izin
+- Verifikasi integritas otomatis
+- Mendukung proteksi folder
+- Mendukung pengecualian file/folder
+- Menggunakan Secret Key
+- Ringan dan mudah digunakan
+- Cocok untuk Bot Telegram, WhatsApp, Discord, dan project Node.js lainnya
+
+---
+
+## 📥 Instalasi
+
+Tambahkan package berikut ke `package.json`:
+
+```json
 {
   "dependencies": {
     "sentinel-kit": "github:sergei-ditthtzynsky/sentinel-kit"
   }
 }
+```
 
-Lalu install:
+Lalu jalankan:
 
+```bash
 npm install
+```
 
 ---
 
-Generate Integrity File
+## 🔨 Membuat File Integrity
 
-Buat file misalnya "generateIntegFile.js"
+Buat file `generateIntegFile.js`
 
+```js
 const sentinel = require("sentinel-kit");
 
 sentinel.generateIntegFile({
@@ -42,19 +61,23 @@ sentinel.generateIntegFile({
     ],
     secretKey: "MY_SECRET_KEY"
 });
+```
 
-Jalankan:
+Kemudian jalankan:
 
+```bash
 node generateIntegFile.js
+```
 
-Setelah berhasil, file ".integ" akan dibuat secara otomatis.
+File integrity akan dibuat secara otomatis.
 
 ---
 
-Verify Integrity
+## 🔍 Verifikasi Integritas
 
-Pasang kode ini sebelum membuat integrity pada file utama project, misalnya "index.js".
+Pasang kode berikut pada file utama project (misalnya `index.js`):
 
+```js
 const sentinel = require("sentinel-kit");
 
 sentinel.verifyIntegrity({
@@ -73,77 +96,89 @@ sentinel.verifyIntegrity({
     ],
     secretKey: "MY_SECRET_KEY"
 });
+```
 
-Jika ada file yang berubah, aplikasi akan langsung dihentikan.
+Contoh:
 
----
+```js
+const sentinel = require("sentinel-kit");
 
-Protector
+sentinel.verifyIntegrity({
+    listProtectedFileAndFolder: ["./"],
+    excludeFileAndFolder: [
+        "./node_modules",
+        "./.npm",
+        "./.cache",
+        "./.env",
+        "./.integ"
+    ],
+    secretKey: "MY_SECRET_KEY"
+});
 
-Sentinel-Kit juga menyediakan Protector.
-
-const { Protector } = require("sentinel-kit");
-
-new Protector().init();
-
-Fitur:
-
-- Filter log sensitif
-- Blokir output token
-- Blokir output database
-- Blokir output github/gitlab
-- Memastikan project dijalankan melalui npm start
-
-Development Mode:
-
-new Protector().init(true);
+// Kode aplikasi
+console.log("Aplikasi berjalan...");
+```
 
 ---
 
-Rekomendasi
+## 📂 Struktur Project
 
-Untuk hasil terbaik, lindungi hanya source code:
-
-listProtectedFileAndFolder: [
-    "./index.js",
-    "./config.js",
-    "./lib",
-    "./plugins"
-]
-
-Jangan melindungi folder yang berubah otomatis seperti:
-
-node_modules
-sessions
-session
-database
-logs
-tmp
-temp
-.cache
-
-Karena perubahan pada file runtime akan menyebabkan Integrity Check gagal.
+```text
+project/
+│
+├── index.js
+├── package.json
+├── generateIntegFile.js
+├── .integ/
+│
+└── node_modules/
+```
 
 ---
 
-Contoh package.json
+## ⚙️ Konfigurasi
 
-{
-  "name": "my-project",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "sentinel-kit": "github:sergei-ditthtzynsky/sentinel-kit"
-  }
-}
+| Parameter | Keterangan |
+|------------|------------|
+| listProtectedFileAndFolder | File atau folder yang akan dilindungi |
+| excludeFileAndFolder | File atau folder yang tidak diperiksa |
+| secretKey | Kunci rahasia untuk validasi integrity |
 
 ---
 
-Author
+## 🛡️ Cara Kerja
 
-Developed by Ditthtzy
+Sentinel-Kit akan membuat hash untuk setiap file yang dilindungi.
+
+Saat aplikasi dijalankan:
+
+1. File integrity dibaca.
+2. Hash terbaru dihitung.
+3. Hash dibandingkan dengan data sebelumnya.
+4. Jika ada file yang berubah, verifikasi gagal.
+
+---
+
+## 📌 Cocok Digunakan Untuk
+
+- Bot Telegram
+- Bot WhatsApp (Baileys)
+- Bot Discord
+- REST API Node.js
+- Private Source Code
+- Project Premium
+
+---
+
+## 👨‍💻 Developer
+
+Ditthtzy
 
 GitHub:
 https://github.com/sergei-ditthtzynsky
+
+---
+
+## 📜 Lisensi
+
+MIT License
